@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>倒计时日历</title>
+        <link rel="icon" href="favicon.png" type="image/png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            justify-items: center;
+        }
+        
+        .countdown-section,
+        .calendar-section,
+        .countdowns-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .countdown-item {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .countdown-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .countdown-timer {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            gap: 10px;
+        }
+        
+        .time-box {
+            text-align: center;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 80px;
+            flex: 1;
+        }
+        
+        .input-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        input[type="text"],
+        input[type="datetime-local"],
+        input[type="number"] {
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        select {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            background: white;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.1s;
+        }
+        
+        button:hover {
+            background: #764ba2;
+        }
+        
+        button:active {
+            transform: scale(0.98);
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                padding: 0 10px;
+            }
+            
+            .countdown-section,
+            .calendar-section,
+            .countdowns-container {
+                max-width: 100%;
+                margin-bottom: 20px;
+            }
+            
+            .input-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            input[type="text"],
+            input[type="datetime-local"],
+            input[type="number"] {
+                width: 100%;
+            }
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .current-time {
+            text-align: center;
+        }
+        
+        .current-date {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+        
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+        
+        .current-clock {
+            font-size: 2.5rem;
+            font-weight: normal;
+            font-family: 'Courier New', 'Monaco', 'Consolas', 'Lucida Console', 'Terminal', monospace;
+            letter-spacing: 0;
+            color: #000;
+            background: rgba(255,255,255,0.8);
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+        
+        .countdown-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .countdown-title {
+            text-align: left;
+            margin-bottom: 20px;
+            color: #667eea;
+            font-size: 1.5rem;
+        }
+        
+        .countdown-input {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+        
+        .input-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 10px;
+            align-items: center;
+            width: 100%;
+        }
+        
+        /* 确保日期时间输入框左对齐 */
+        input[type="datetime-local"] {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            width: 220px;
+            text-align: left;
+        }
+        
+        /* 确保名称输入框左对齐 */
+        input[type="text"] {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            width: 200px;
+            text-align: left;
+        }
+        
+        /* 为支持秒级输入的浏览器添加样式 */
+        input[type="datetime-local"][step="1"] {
+            /* 这个选择器会匹配支持秒级输入的浏览器 */
+        }
+        
+        input[type="text"] {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            width: 200px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #764ba2;
+        }
+        
+        button.delete-btn {
+            background: #ff6b6b;
+        }
+        
+        button.delete-btn:hover {
+            background: #ee5a5a;
+        }
+        
+        .countdown-timer {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+        }
+        
+        .time-box {
+            text-align: center;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 80px;
+        }
+        
+        .time-value {
+            font-size: 1.5rem;
+            font-weight: normal;
+            font-family: 'Courier New', 'Monaco', 'Consolas', 'Lucida Console', 'Terminal', monospace;
+            color: #000;
+            background: rgba(255,255,255,0.8);
+            padding: 5px;
+            border-radius: 3px;
+            display: inline-block;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .time-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .countdown-message {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+        
+        .countdown-item {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .countdown-item h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .countdown-item .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            font-size: 0.8rem;
+        }
+        
+        .calendar-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .calendar-title {
+            font-size: 1.5rem;
+            color: #667eea;
+        }
+        
+        .calendar-nav {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .nav-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background: #f8f9fa;
+            transition: background 0.3s;
+        }
+        
+        .nav-btn:hover {
+            background: #e9ecef;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+        
+        .weekday {
+            text-align: center;
+            font-weight: bold;
+            color: #666;
+            padding: 10px;
+        }
+        
+        .day {
+            text-align: center;
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .day:hover {
+            background: #f8f9fa;
+        }
+        
+        .day.today {
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .day.other-month {
+            opacity: 0.3;
+        }
+        
+        .day.selected {
+            background: #764ba2;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .event {
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background: #ff6b6b;
+            border-radius: 50%;
+        }
+        
+        .countdowns-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            flex: 1;
+            min-width: 300px;
+            max-width: 600px;
+            max-height: 600px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .countdowns-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .countdowns-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .countdowns-container::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 10px;
+        }
+        
+        .countdowns-container::-webkit-scrollbar-thumb:hover {
+            background: #764ba2;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .countdown-section,
+            .calendar-section,
+            .countdowns-container {
+                width: 100%;
+                max-width: none;
+            }
+            
+            input[type="datetime-local"],
+            input[type="text"] {
+                margin-bottom: 10px;
+                margin-right: 0;
+                width: 100%;
+            }
+            
+            button {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 style="display: flex; align-items: center; gap: 15px;">
+                <img src="favicon.png" alt="日历图标" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                倒计时日历
+            </h1>
+            <div class="current-time" id="currentTime"></div>
+        </header>
+        
+        <div class="main-content">
+            <!-- 倒计时添加部分 -->
+            <div class="countdown-section">
+                <h2 class="countdown-title">添加倒计时</h2>
+                <div class="countdown-input">
+                    <div class="input-row">
+                        <input type="text" id="countdownName" placeholder="倒计时名称">
+                    </div>
+                    <div class="input-row">
+                        <label for="countdownType">倒计时类型：</label>
+                        <select id="countdownType">
+                            <option value="datetime">YYYY-MM-DD</option>
+                            <option value="hms">HH:MM:SS</option>
+                        </select>
+                    </div>
+                    <div class="input-row" id="datetimeInput">
+                        <input type="datetime-local" id="targetDateTime" step="1">
+                    </div>
+                    <div class="input-row" id="hmsInput" style="display: none;">
+                        <input type="number" id="hours" placeholder="小时" min="0" max="9999">
+                        <input type="number" id="minutes" placeholder="分钟" min="0" max="59">
+                        <input type="number" id="seconds" placeholder="秒" min="0" max="59">
+                    </div>
+                    <div class="input-row">
+                        <button id="addCountdown">添加</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 日历部分 -->
+            <div class="calendar-section">
+                <div class="calendar-header">
+                    <h2 class="calendar-title" id="calendarTitle">2024年1月</h2>
+                    <div class="calendar-nav">
+                        <div class="nav-btn" id="prevMonth">&lt;</div>
+                        <div class="nav-btn" id="nextMonth">&gt;</div>
+                    </div>
+                </div>
+                <div class="calendar-grid">
+                    <div class="weekday">日</div>
+                    <div class="weekday">一</div>
+                    <div class="weekday">二</div>
+                    <div class="weekday">三</div>
+                    <div class="weekday">四</div>
+                    <div class="weekday">五</div>
+                    <div class="weekday">六</div>
+                    <!-- 日期将通过JavaScript生成 -->
+                </div>
+            </div>
+            
+            <!-- 倒计时列表 -->
+            <div class="countdowns-container">
+                <h2 class="countdown-title">倒计时列表</h2>
+                <div id="countdownsList">
+                    <!-- 倒计时项将通过JavaScript生成 -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 当前日期
+        const today = new Date();
+        
+        // 倒计时列表
+        let countdowns = [];
+        let countdownId = 0;
+        
+        // 当前显示的月份和年份
+        let currentMonth = today.getMonth();
+        let currentYear = today.getFullYear();
+        
+        // 生成随机背景颜色
+        function generateRandomBackground() {
+            // 生成随机颜色
+            function getRandomColor() {
+                const letters = '0123456789ABCDEF';
+                let color = '#';
+                for (let i = 0; i < 6; i++) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                return color;
+            }
+            
+            // 生成随机渐变方向
+            const angle = Math.floor(Math.random() * 360);
+            
+            // 生成两个随机颜色
+            const color1 = getRandomColor();
+            const color2 = getRandomColor();
+            
+            // 设置背景渐变
+            document.body.style.background = `linear-gradient(${angle}deg, ${color1}, ${color2})`;
+        }
+        
+        // 初始化
+        function init() {
+            generateRandomBackground();
+            updateCurrentTime();
+            generateCalendar(currentYear, currentMonth);
+            checkEmptyCountdowns();
+            
+            // 设置默认日期时间（包含秒级精度）
+            const now = new Date();
+            // 生成包含秒的日期时间字符串
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const defaultDateTime = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+            document.getElementById('targetDateTime').value = defaultDateTime;
+            
+            // 事件监听
+            document.getElementById('addCountdown').addEventListener('click', addCountdown);
+            
+            // 倒计时类型切换
+            document.getElementById('countdownType').addEventListener('change', function() {
+                const type = this.value;
+                if (type === 'datetime') {
+                    document.getElementById('datetimeInput').style.display = 'flex';
+                    document.getElementById('hmsInput').style.display = 'none';
+                } else {
+                    document.getElementById('datetimeInput').style.display = 'none';
+                    document.getElementById('hmsInput').style.display = 'flex';
+                }
+            });
+            
+            // 添加防抖动处理
+            let isGenerating = false;
+            
+            function navigateMonth(delta) {
+                if (isGenerating) return;
+                isGenerating = true;
+                
+                currentMonth += delta;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                } else if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                
+                generateCalendar(currentYear, currentMonth);
+                
+                // 短暂延迟后允许再次导航
+                setTimeout(() => {
+                    isGenerating = false;
+                }, 100);
+            }
+            
+            document.getElementById('prevMonth').addEventListener('click', function() {
+                navigateMonth(-1);
+            });
+            
+            document.getElementById('nextMonth').addEventListener('click', function() {
+                navigateMonth(1);
+            });
+            
+            // 自动更新
+            setInterval(updateCurrentTime, 1000);
+            setInterval(updateCountdowns, 1000);
+        }
+        
+        // 更新当前时间
+        function updateCurrentTime() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            
+            document.getElementById('currentTime').innerHTML = `
+                <div class="current-date">${year}年${month}月${day}日</div>
+                <div class="current-clock">${hours}:${minutes}:${seconds}</div>
+            `;
+        }
+        
+        // 生成日历
+        function generateCalendar(year, month) {
+            const calendarGrid = document.querySelector('.calendar-grid');
+            // 清空日历（保留星期标题）
+            const days = calendarGrid.querySelectorAll('.day');
+            days.forEach(day => day.remove());
+            
+            // 更新标题
+            document.getElementById('calendarTitle').textContent = `日历 ${year}年${month + 1}月`;
+            
+            // 计算当月第一天是星期几
+            const firstDay = new Date(year, month, 1);
+            const startDay = firstDay.getDay();
+            
+            // 计算当月有多少天
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            
+            // 计算上月剩余天数
+            const prevDays = new Date(year, month, 0).getDate();
+            
+            // 生成日历
+            // 上月剩余天数
+            for (let i = startDay - 1; i >= 0; i--) {
+                const dayElement = document.createElement('div');
+                dayElement.classList.add('day', 'other-month');
+                dayElement.textContent = prevDays - i;
+                calendarGrid.appendChild(dayElement);
+            }
+            
+            // 当月天数
+            for (let i = 1; i <= daysInMonth; i++) {
+                const dayElement = document.createElement('div');
+                dayElement.classList.add('day');
+                dayElement.textContent = i;
+                
+                // 标记今天
+                if (i === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                    dayElement.classList.add('today');
+                }
+                
+                // 添加点击事件
+                dayElement.addEventListener('click', function() {
+                    const selectedDate = new Date(year, month, i);
+                    const currentTime = new Date(); // 获取当前时间
+                    // 生成包含秒的日期时间字符串
+                    const selYear = selectedDate.getFullYear();
+                    const selMonth = String(selectedDate.getMonth() + 1).padStart(2, '0');
+                    const selDay = String(selectedDate.getDate()).padStart(2, '0');
+                    const selHours = String(currentTime.getHours()).padStart(2, '0');
+                    const selMinutes = String(currentTime.getMinutes()).padStart(2, '0');
+                    const selSeconds = String(currentTime.getSeconds()).padStart(2, '0');
+                    const dateStr = `${selYear}-${selMonth}-${selDay}T${selHours}:${selMinutes}:${selSeconds}`;
+                    document.getElementById('targetDateTime').value = dateStr;
+                });
+                
+                calendarGrid.appendChild(dayElement);
+            }
+            
+            // 下月填充天数
+            const remainingDays = 42 - (startDay + daysInMonth); // 6行7列共42个格子
+            for (let i = 1; i <= remainingDays; i++) {
+                const dayElement = document.createElement('div');
+                dayElement.classList.add('day', 'other-month');
+                dayElement.textContent = i;
+                calendarGrid.appendChild(dayElement);
+            }
+        }
+        
+        // 添加倒计时
+        function addCountdown() {
+            const name = document.getElementById('countdownName').value || `倒计时 ${countdownId + 1}`;
+            const type = document.getElementById('countdownType').value;
+            let targetDateTime;
+            
+            if (type === 'datetime') {
+                const dateTimeStr = document.getElementById('targetDateTime').value;
+                if (!dateTimeStr) {
+                    alert('请选择目标日期和时间');
+                    return;
+                }
+                targetDateTime = new Date(dateTimeStr);
+            } else {
+                const hours = parseInt(document.getElementById('hours').value) || 0;
+                const minutes = parseInt(document.getElementById('minutes').value) || 0;
+                const seconds = parseInt(document.getElementById('seconds').value) || 0;
+                
+                if (hours === 0 && minutes === 0 && seconds === 0) {
+                    alert('请输入有效的时分秒');
+                    return;
+                }
+                
+                targetDateTime = new Date();
+                targetDateTime.setHours(targetDateTime.getHours() + hours);
+                targetDateTime.setMinutes(targetDateTime.getMinutes() + minutes);
+                targetDateTime.setSeconds(targetDateTime.getSeconds() + seconds);
+            }
+            
+            const countdown = {
+                id: countdownId++,
+                name: name,
+                target: targetDateTime
+            };
+            
+            countdowns.push(countdown);
+            renderCountdown(countdown);
+            checkEmptyCountdowns();
+            
+            // 清空输入
+            document.getElementById('countdownName').value = '';
+            if (type === 'hms') {
+                document.getElementById('hours').value = '';
+                document.getElementById('minutes').value = '';
+                document.getElementById('seconds').value = '';
+            }
+        }
+        
+        // 渲染倒计时
+        function renderCountdown(countdown) {
+            const countdownsList = document.getElementById('countdownsList');
+            
+            const countdownItem = document.createElement('div');
+            countdownItem.id = `countdown-${countdown.id}`;
+            countdownItem.classList.add('countdown-item');
+            
+            countdownItem.innerHTML = `
+                <h3>${countdown.name}</h3>
+                <div class="countdown-timer">
+                    <div class="time-box">
+                        <div class="time-value days">00</div>
+                        <div class="time-label">天</div>
+                    </div>
+                    <div class="time-box">
+                        <div class="time-value hours">00</div>
+                        <div class="time-label">时</div>
+                    </div>
+                    <div class="time-box">
+                        <div class="time-value minutes">00</div>
+                        <div class="time-label">分</div>
+                    </div>
+                    <div class="time-box">
+                        <div class="time-value seconds">00</div>
+                        <div class="time-label">秒</div>
+                    </div>
+                </div>
+                <div class="countdown-message"></div>
+                <button class="delete-btn" onclick="deleteCountdown(${countdown.id})">删除</button>
+            `;
+            
+            countdownsList.appendChild(countdownItem);
+            updateSingleCountdown(countdown);
+        }
+        
+        // 删除倒计时
+        function deleteCountdown(id) {
+            countdowns = countdowns.filter(c => c.id !== id);
+            const element = document.getElementById(`countdown-${id}`);
+            if (element) {
+                element.remove();
+            }
+            checkEmptyCountdowns();
+        }
+        
+        // 检查倒计时列表是否为空
+        function checkEmptyCountdowns() {
+            const countdownsList = document.getElementById('countdownsList');
+            const emptyMessage = document.getElementById('emptyMessage');
+            
+            if (countdowns.length === 0) {
+                if (!emptyMessage) {
+                    const emptyDiv = document.createElement('div');
+                    emptyDiv.id = 'emptyMessage';
+                    emptyDiv.style.cssText = `
+                        text-align: center;
+                        color: #666;
+                        padding: 40px 20px;
+                    `;
+                    emptyDiv.textContent = '还没有添加倒计时，点击左侧添加按钮创建第一个倒计时吧！';
+                    countdownsList.appendChild(emptyDiv);
+                }
+            } else {
+                if (emptyMessage) {
+                    emptyMessage.remove();
+                }
+            }
+        }
+        
+        // 更新单个倒计时
+        function updateSingleCountdown(countdown) {
+            const element = document.getElementById(`countdown-${countdown.id}`);
+            if (!element) return;
+            
+            const now = new Date();
+            const diff = countdown.target - now;
+            
+            const daysElement = element.querySelector('.days');
+            const hoursElement = element.querySelector('.hours');
+            const minutesElement = element.querySelector('.minutes');
+            const secondsElement = element.querySelector('.seconds');
+            const messageElement = element.querySelector('.countdown-message');
+            
+            if (diff <= 0) {
+                daysElement.textContent = '00';
+                hoursElement.textContent = '00';
+                minutesElement.textContent = '00';
+                secondsElement.textContent = '00';
+                messageElement.textContent = '目标时间已过！';
+                return;
+            }
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            daysElement.textContent = days.toString().padStart(2, '0');
+            hoursElement.textContent = hours.toString().padStart(2, '0');
+            minutesElement.textContent = minutes.toString().padStart(2, '0');
+            secondsElement.textContent = seconds.toString().padStart(2, '0');
+            
+            const targetOptions = {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            messageElement.textContent = `距离 ${countdown.target.toLocaleString('zh-CN', targetOptions)} 还有`;
+        }
+        
+        // 更新所有倒计时
+        function updateCountdowns() {
+            countdowns.forEach(countdown => {
+                updateSingleCountdown(countdown);
+            });
+        }
+        
+        // 初始化
+        init();
+    </script>
+    <footer style="position: fixed; bottom: 20px; right: 20px; background: rgba(255, 255, 255, 0.95); border-radius: 10px; padding: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); backdrop-filter: blur(10px); text-align: right; font-size: 0.9rem; color: #666;">
+        <div>Developed by the 张思哲</div>
+        <div>2026 , © zsz-qwq</div>
+        <div>All rights reserved.</div>
+    </footer>
+</body>
+</html>

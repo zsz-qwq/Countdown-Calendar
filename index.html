@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>倒计时日历</title>
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 style="display: flex; align-items: center; gap: 15px;">
+                <img src="favicon.png" alt="日历图标" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                倒计时日历
+            </h1>
+            <div class="current-time" id="currentTime"></div>
+        </header>
+        
+        <div class="main-content">
+            <!-- 倒计时添加部分 -->
+            <div class="countdown-section">
+                <h2 class="countdown-title">添加倒计时</h2>
+                <div class="countdown-input">
+                    <div class="input-row">
+                        <input type="text" id="countdownName" placeholder="倒计时名称">
+                    </div>
+                    <div class="input-row">
+                        <label for="countdownType">倒计时类型：</label>
+                        <select id="countdownType">
+                            <option value="datetime">YYYY-MM-DD</option>
+                            <option value="hms">HH:MM:SS</option>
+                        </select>
+                    </div>
+                    <div class="input-row" id="datetimeInput">
+                        <input type="datetime-local" id="targetDateTime" step="1">
+                    </div>
+                    <div class="input-row" id="hmsInput" style="display: none;">
+                        <input type="number" id="hours" placeholder="小时" min="0" max="9999">
+                        <input type="number" id="minutes" placeholder="分钟" min="0" max="59">
+                        <input type="number" id="seconds" placeholder="秒" min="0" max="59">
+                    </div>
+                    <div class="input-row">
+                        <button id="addCountdown">添加</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 日历部分 -->
+            <div class="calendar-section">
+                <div class="calendar-header">
+                    <h2 class="calendar-title" id="calendarTitle">2024年1月</h2>
+                    <div class="calendar-nav">
+                        <div class="nav-btn" id="prevMonth">&lt;</div>
+                        <div class="nav-btn" id="nextMonth">&gt;</div>
+                    </div>
+                </div>
+                <div class="calendar-grid">
+                    <div class="weekday">日</div>
+                    <div class="weekday">一</div>
+                    <div class="weekday">二</div>
+                    <div class="weekday">三</div>
+                    <div class="weekday">四</div>
+                    <div class="weekday">五</div>
+                    <div class="weekday">六</div>
+                    <!-- 日期将通过JavaScript生成 -->
+                </div>
+            </div>
+            
+            <!-- 倒计时列表 -->
+            <div class="countdowns-container">
+                <h2 class="countdown-title">倒计时列表</h2>
+                <div id="countdownsList">
+                    <!-- 倒计时项将通过JavaScript生成 -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="utils.js"></script>
+    <script src="calendar.js"></script>
+    <script src="countdown.js"></script>
+    <script src="script.js"></script>
+    
+    <footer style="position: fixed; bottom: 20px; right: 20px; background: rgba(255, 255, 255, 0.95); border-radius: 10px; padding: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); backdrop-filter: blur(10px); text-align: right; font-size: 0.9rem; color: #666;">
+        <div>Developed by the 张思哲</div>
+        <div>2026 , © zsz-qwq</div>
+        <div>All rights reserved.</div>
+    </footer>
+</body>
+</html>
