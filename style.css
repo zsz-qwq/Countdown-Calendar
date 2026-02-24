@@ -1,233 +1,144 @@
+/* 全局样式重置 */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* 基础样式 */
 body {
     font-family: 'Arial', sans-serif;
     min-height: 100vh;
     color: #333;
+    transition: background 0.3s ease;
 }
 
+/* 容器样式 */
 .container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 20px;
+    max-width: 100%;
+    margin: 0;
+    padding: 40px;
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    transition: all 0.3s ease;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
+/* 头部样式 */
 header {
     text-align: center;
-    margin-bottom: 40px;
-    color: white;
+    margin-bottom: 30px;
+    color: #333;
+    transition: color 0.3s ease;
 }
 
-h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+header h1 {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    transition: text-shadow 0.3s ease;
 }
 
+/* 当前时间样式 */
 .current-time {
-    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 25px;
+    color: #666;
+    transition: color 0.3s ease;
 }
 
-.current-date {
-    font-size: 1rem;
-    opacity: 0.9;
-    margin-bottom: 5px;
-}
-
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
-
-.current-clock {
-    font-size: 2.5rem;
-    font-weight: normal;
-    font-family: 'Courier New', 'Monaco', 'Consolas', 'Lucida Console', 'Terminal', monospace;
-    letter-spacing: 0;
-    color: #000;
-    background: rgba(255,255,255,0.8);
-    padding: 5px 10px;
-    border-radius: 5px;
-    display: inline-block;
-}
-
+/* 主要内容区域 */
 .main-content {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 50px;
+    margin-bottom: 60px;
+    flex: 1;
 }
 
-.countdown-section,
-.calendar-section,
-.countdowns-container {
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 15px;
+/* 倒计时添加部分 */
+.countdown-section {
+    background: #ffffff;
+    border-radius: 10px;
     padding: 30px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    backdrop-filter: blur(10px);
-    flex: 1;
-    min-width: 300px;
-    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
 .countdown-title {
-    text-align: left;
-    margin-bottom: 20px;
-    color: #667eea;
     font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #444;
+    text-align: center;
+    transition: color 0.3s ease;
 }
 
 .countdown-input {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
     gap: 15px;
-    margin-bottom: 30px;
-    width: 100%;
 }
 
 .input-row {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    gap: 10px;
     align-items: center;
-    width: 100%;
-    margin-bottom: 15px;
+    gap: 10px;
 }
 
-input[type="datetime-local"] {
+.input-row label {
+    min-width: 80px;
+    font-weight: bold;
+    color: #555;
+    transition: color 0.3s ease;
+}
+
+.input-row input[type="text"],
+.input-row input[type="datetime-local"],
+.input-row select {
+    flex: 1;
     padding: 10px;
     border: 2px solid #ddd;
     border-radius: 5px;
     font-size: 1rem;
-    width: 220px;
-    text-align: left;
+    transition: all 0.3s ease;
 }
 
-input[type="text"] {
-    padding: 10px;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    font-size: 1rem;
-    width: 200px;
-    text-align: left;
+.input-row input:focus,
+.input-row select:focus {
+    border-color: #8a9aff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(138, 154, 255, 0.1);
 }
 
-input[type="number"] {
-    padding: 10px;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    font-size: 1rem;
-    width: 80px;
-    text-align: left;
-}
-
-select {
-    padding: 10px;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    font-size: 1rem;
-    background: white;
-}
-
-button {
+.input-row button {
     padding: 10px 20px;
-    background: #667eea;
-    color: white;
     border: none;
     border-radius: 5px;
+    background: #8a9aff;
+    color: white;
     font-size: 1rem;
+    font-weight: bold;
     cursor: pointer;
-    transition: background 0.3s, transform 0.1s;
+    transition: all 0.3s ease;
 }
 
-button:hover {
-    background: #764ba2;
+.input-row button:hover {
+    background: #7a89ff;
+    transform: scale(1.05);
+    box-shadow: 0 5px 10px rgba(138, 154, 255, 0.3);
 }
 
-button:active {
-    transform: scale(0.98);
-}
-
-button.delete-btn {
-    background: #ff6b6b;
-}
-
-button.delete-btn:hover {
-    background: #ee5a5a;
-}
-
-.countdown-item {
-    background: rgba(255, 255, 255, 0.9);
+/* 日历部分 */
+.calendar-section {
+    background: #ffffff;
     border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    margin-bottom: 20px;
-    position: relative;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.countdown-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-}
-
-.countdown-timer {
-    display: flex;
-    justify-content: space-around;
-    margin: 30px 0;
-    gap: 10px;
-}
-
-.time-box {
-    text-align: center;
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 10px;
-    min-width: 80px;
-    flex: 1;
-}
-
-.time-value {
-    font-size: 1.5rem;
-    font-weight: normal;
-    font-family: 'Courier New', 'Monaco', 'Consolas', 'Lucida Console', 'Terminal', monospace;
-    color: #000;
-    background: rgba(255,255,255,0.8);
-    padding: 5px;
-    border-radius: 3px;
-    display: inline-block;
-    min-width: 60px;
-    text-align: center;
-}
-
-.time-label {
-    font-size: 0.9rem;
-    color: #666;
-    margin-top: 5px;
-}
-
-.countdown-message {
-    text-align: center;
-    margin-top: 20px;
-    color: #666;
-}
-
-.countdown-item h3 {
-    color: #667eea;
-    margin-bottom: 15px;
-    font-size: 1.2rem;
-}
-
-.countdown-item .delete-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    padding: 5px 10px;
-    font-size: 0.8rem;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
 .calendar-header {
@@ -238,8 +149,10 @@ button.delete-btn:hover {
 }
 
 .calendar-title {
-    font-size: 1.5rem;
-    color: #667eea;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #444;
+    transition: color 0.3s ease;
 }
 
 .calendar-nav {
@@ -250,23 +163,28 @@ button.delete-btn:hover {
 .nav-btn {
     width: 30px;
     height: 30px;
-    border-radius: 50%;
+    border: none;
+    border-radius: 5px;
+    background: #f0f0f0;
+    color: #333;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    background: #f8f9fa;
-    transition: background 0.3s;
+    transition: all 0.3s ease;
 }
 
 .nav-btn:hover {
-    background: #e9ecef;
+    background: #e0e0e0;
+    transform: scale(1.1);
 }
 
 .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
+    gap: 5px;
 }
 
 .weekday {
@@ -274,99 +192,405 @@ button.delete-btn:hover {
     font-weight: bold;
     color: #666;
     padding: 10px;
+    border-radius: 5px;
+    transition: color 0.3s ease;
 }
 
 .day {
     text-align: center;
-    padding: 15px;
-    border-radius: 50%;
+    padding: 10px;
+    border-radius: 5px;
     cursor: pointer;
-    transition: all 0.3s;
-    position: relative;
+    transition: all 0.3s ease;
 }
 
 .day:hover {
-    background: #f8f9fa;
+    background: rgba(138, 154, 255, 0.1);
+    transform: scale(1.1);
 }
 
 .day.today {
-    background: #667eea;
+    background: #8a9aff;
     color: white;
     font-weight: bold;
 }
 
 .day.other-month {
-    opacity: 0.3;
+    color: #ccc;
+    opacity: 0.6;
 }
 
-.day.selected {
-    background: #764ba2;
-    color: white;
-    font-weight: bold;
-}
-
-.event {
-    position: absolute;
-    bottom: 2px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 4px;
-    height: 4px;
-    background: #ff6b6b;
-    border-radius: 50%;
-}
-
+/* 倒计时列表部分 */
 .countdowns-container {
-    max-height: 600px;
-    overflow-y: auto;
-    padding-right: 10px;
-}
-
-.countdowns-container::-webkit-scrollbar {
-    width: 8px;
-}
-
-.countdowns-container::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: #ffffff;
     border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
-.countdowns-container::-webkit-scrollbar-thumb {
+#countdownsList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.countdown-item {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.countdown-item:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.countdown-item h3 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #444;
+    transition: color 0.3s ease;
+}
+
+.countdown-timer {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.time-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(240, 240, 240, 0.8);
+    border-radius: 5px;
+    padding: 10px;
+    transition: all 0.3s ease;
+}
+
+.time-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 3px;
+    padding: 5px 10px;
+    min-width: 60px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.time-label {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 5px;
+    transition: color 0.3s ease;
+}
+
+.countdown-message {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 15px;
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.countdown-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.countdown-actions button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.countdown-actions button.edit-btn {
+    background: #4CAF50;
+    color: white;
+}
+
+.countdown-actions button.edit-btn:hover {
+    background: #45a049;
+    transform: scale(1.05);
+}
+
+.countdown-actions button.delete-btn {
+    background: #f44336;
+    color: white;
+}
+
+.countdown-actions button.delete-btn:hover {
+    background: #da190b;
+    transform: scale(1.05);
+}
+
+/* 空列表消息 */
+#emptyMessage {
+    text-align: center;
+    color: #666;
+    padding: 40px 20px;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+/* 页脚样式 */
+footer {
+    position: relative;
+    margin-top: 60px;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 0;
+    box-shadow: none;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+    transition: all 0.3s ease;
+    margin-bottom: 0;
+}
+
+/* 暗黑模式样式 */
+body.dark-mode {
+    color: #f0f0f0;
+    background: linear-gradient(45deg, #2a2a2a, #1a1a1a);
+}
+
+body.dark-mode .container {
+    background: transparent;
+    box-shadow: none;
+}
+
+body.dark-mode header {
+    color: #f0f0f0;
+}
+
+body.dark-mode header h1 {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .current-time {
+    color: #ccc;
+}
+
+body.dark-mode .countdown-section,
+body.dark-mode .calendar-section,
+body.dark-mode .countdowns-container {
+    background: rgba(40, 40, 40, 0.95);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .countdown-title {
+    color: #ccc;
+}
+
+body.dark-mode .input-row label {
+    color: #ccc;
+}
+
+body.dark-mode .input-row input[type="text"],
+body.dark-mode .input-row input[type="datetime-local"],
+body.dark-mode .input-row select {
+    background: rgba(60, 60, 60, 0.9);
+    color: #f0f0f0;
+    border: 2px solid #555;
+}
+
+body.dark-mode .input-row input:focus,
+body.dark-mode .input-row select:focus {
+    border-color: #8a9aff;
+    box-shadow: 0 0 0 3px rgba(138, 154, 255, 0.2);
+}
+
+body.dark-mode .input-row button {
     background: #667eea;
-    border-radius: 10px;
 }
 
-.countdowns-container::-webkit-scrollbar-thumb:hover {
-    background: #764ba2;
+body.dark-mode .input-row button:hover {
+    background: #5a6cd8;
+    box-shadow: 0 5px 10px rgba(102, 126, 234, 0.3);
 }
 
+body.dark-mode .calendar-title {
+    color: #ccc;
+}
+
+body.dark-mode .nav-btn {
+    background: rgba(60, 60, 60, 0.9);
+    color: #f0f0f0;
+}
+
+body.dark-mode .nav-btn:hover {
+    background: rgba(70, 70, 70, 0.9);
+}
+
+body.dark-mode .weekday {
+    color: #ccc;
+}
+
+body.dark-mode .day {
+    color: #f0f0f0;
+}
+
+body.dark-mode .day:hover {
+    background: rgba(102, 126, 234, 0.2);
+}
+
+body.dark-mode .day.today {
+    background: #667eea;
+    color: white;
+}
+
+body.dark-mode .day.other-month {
+    color: #666;
+}
+
+body.dark-mode .countdown-item {
+    background: rgba(50, 50, 50, 0.9);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .countdown-item:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .countdown-item h3 {
+    color: #8a9aff;
+}
+
+body.dark-mode .time-box {
+    background: rgba(60, 60, 60, 0.8);
+}
+
+body.dark-mode .time-value {
+    color: #f0f0f0;
+    background: rgba(70, 70, 70, 0.8);
+}
+
+body.dark-mode .time-label {
+    color: #ccc;
+}
+
+body.dark-mode .countdown-message {
+    color: #ccc;
+}
+
+body.dark-mode .countdown-actions button.edit-btn {
+    background: #45a049;
+}
+
+body.dark-mode .countdown-actions button.edit-btn:hover {
+    background: #3d8b40;
+}
+
+body.dark-mode .countdown-actions button.delete-btn {
+    background: #e55a5a;
+}
+
+body.dark-mode .countdown-actions button.delete-btn:hover {
+    background: #d54a4a;
+}
+
+body.dark-mode #emptyMessage {
+    color: #999;
+}
+
+body.dark-mode footer {
+    background: rgba(30, 30, 30, 0.95);
+    color: #ccc;
+    box-shadow: none;
+}
+
+/* 响应式设计 */
 @media (max-width: 768px) {
-    .main-content {
-        flex-direction: column;
-        align-items: center;
+    .container {
+        padding: 20px;
+        min-height: 100vh;
     }
-    
+
+    header h1 {
+        font-size: 2rem;
+    }
+
+    .main-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        margin-bottom: 40px;
+    }
+
+    .countdown-timer {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .time-box {
+        min-width: 80px;
+    }
+
+    .input-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .input-row label {
+        min-width: auto;
+    }
+
+    .input-row input,
+    .input-row select {
+        width: 100%;
+    }
+
+    footer {
+        margin-top: 40px;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 15px;
+    }
+
+    header h1 {
+        font-size: 1.8rem;
+    }
+
+    .current-time {
+        font-size: 1rem;
+    }
+
+    .main-content {
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
     .countdown-section,
     .calendar-section,
     .countdowns-container {
-        width: 100%;
-        max-width: none;
+        padding: 20px;
     }
-    
-    input[type="datetime-local"],
-    input[type="text"],
-    input[type="number"] {
-        margin-bottom: 10px;
-        margin-right: 0;
-        width: 100%;
+
+    .time-value {
+        font-size: 1.2rem;
+        min-width: 60px;
     }
-    
-    .input-row {
-        flex-direction: column;
-        align-items: stretch;
+
+    .time-label {
+        font-size: 0.8rem;
     }
-    
-    button {
-        margin-bottom: 10px;
+
+    footer {
+        margin-top: 30px;
+        padding: 15px;
     }
 }
