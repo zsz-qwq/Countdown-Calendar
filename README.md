@@ -1,3 +1,5 @@
+中文 | [EN](/README_EN.md)
+
 # 倒计时日历工具
 
 一个功能强大、界面美观的简易倒计时工具，支持多倒计时项管理、正计时功能和暗黑模式。
@@ -52,17 +54,6 @@
    - 点击页面顶部的「🌙 暗黑模式」按钮切换主题
    - 主题设置会自动保存，下次打开时保持上次选择
 
-## 📷 功能截图
-
-### 浅色模式
-![浅色模式](https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20countdown%20calendar%20web%20app%20in%20light%20mode%20with%20gradient%20background%2C%20showing%20multiple%20countdown%20items%20and%20calendar%20view%2C%20clean%20UI%20design&image_size=landscape_16_9)
-
-### 暗黑模式
-![暗黑模式](https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20countdown%20calendar%20web%20app%20in%20dark%20mode%20with%20dark%20background%2C%20showing%20multiple%20countdown%20items%20and%20calendar%20view%2C%20clean%20UI%20design&image_size=landscape_16_9)
-
-### 移动端适配
-![移动端适配](https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=countdown%20calendar%20web%20app%20on%20mobile%20phone%2C%20responsive%20design%2C%20showing%20countdown%20items%20and%20calendar%20view&image_size=portrait_16_9)
-
 ## 📁 项目结构
 
 ```
@@ -73,8 +64,7 @@ Countdown-Calendar/
 ├── calendar.js         # 日历功能
 ├── countdown.js        # 倒计时核心逻辑
 ├── script.js           # 页面交互
-├── favicon.png         # 网站图标
-└── README.md           # 项目说明
+└── favicon.png         # 网站图标
 ```
 
 ## ⚠️ 已知问题/限制
@@ -96,12 +86,7 @@ Countdown-Calendar/
 
 ## 📄 许可证
 
-本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情
-
-## 📞 联系方式
-
-- **开发者**：张思哲
-- **项目地址**：<仓库地址>
+本项目采用 MIT 许可证 - 查看 [LICENSE](/LICENSE) 文件了解详情
 
 ---
 
