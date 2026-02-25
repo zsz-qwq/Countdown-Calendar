@@ -17,8 +17,36 @@
         document.body.style.background = `linear-gradient(${angle}deg, ${color1}, ${color2})`;
     }
 
-    function updateCurrentTime() {
-        const now = new Date();
+    function updateCurrentTime(timezone = 'local') {
+        let now;
+        
+        if (timezone === 'local') {
+            now = new Date();
+        } else if (timezone === 'UTC') {
+            const current = new Date();
+            now = new Date(Date.UTC(
+                current.getUTCFullYear(),
+                current.getUTCMonth(),
+                current.getUTCDate(),
+                current.getUTCHours(),
+                current.getUTCMinutes(),
+                current.getUTCSeconds()
+            ));
+        } else if (timezone.startsWith('UTC')) {
+            const offsetMatch = timezone.match(/UTC([+-]\d+)/);
+            if (offsetMatch) {
+                const offsetHours = parseInt(offsetMatch[1]);
+                const current = new Date();
+                const utcTimestamp = current.getTime() + current.getTimezoneOffset() * 60 * 1000;
+                const targetTimestamp = utcTimestamp + offsetHours * 60 * 60 * 1000;
+                now = new Date(targetTimestamp);
+            } else {
+                now = new Date();
+            }
+        } else {
+            now = new Date();
+        }
+        
         const year = now.getFullYear();
         const month = String(now.getMonth() + 1).padStart(2, '0');
         const day = String(now.getDate()).padStart(2, '0');
