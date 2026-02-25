@@ -9,22 +9,62 @@ function init() {
         const languageSelector = document.getElementById('languageSelector');
         if (languageSelector) {
             // 设置当前语言
-            languageSelector.value = i18n.currentLanguage;
+            languageSelector.value = store.getState().language || i18n.currentLanguage;
             
             // 添加事件监听器
             languageSelector.addEventListener('change', function() {
                 i18n.setLanguage(this.value);
+                store.setLanguage(this.value);
             });
         }
     }
     
     // 调用工具函数和模块函数
     utils.generateRandomBackground();
-    const savedTimezone = localStorage.getItem('countdownTimezone') || 'local';
+    const savedTimezone = store.getState().currentTimezone || 'local';
     utils.updateCurrentTime(savedTimezone);
-    calendar.generateCalendar(calendar.currentYear, calendar.currentMonth);
-    countdown.loadData();
-    countdown.checkEmptyCountdowns();
+    
+    // 初始化日历，添加错误处理和延迟
+    try {
+        if (window.calendar) {
+            // 确保日历模块已初始化
+            if (calendar.init) {
+                calendar.init();
+            }
+            // 延迟执行，确保DOM已完全加载
+            setTimeout(() => {
+                calendar.generateCalendar(calendar.currentYear, calendar.currentMonth);
+                console.log('日历初始化成功');
+            }, 100);
+        } else {
+            console.error('日历模块未加载');
+        }
+    } catch (error) {
+        console.error('初始化日历失败:', error);
+        // 尝试直接创建日期对象重新初始化
+        setTimeout(() => {
+            const today = new Date();
+            if (window.calendar) {
+                calendar.generateCalendar(today.getFullYear(), today.getMonth());
+            }
+        }, 500);
+    }
+    
+    // 从 store 加载数据到 countdown 模块
+    if (window.countdown) {
+        countdown.countdowns = store.getState().countdowns;
+        countdown.countdownId = store.getState().countdownId;
+        countdown.renderCountdownsList();
+        countdown.checkEmptyCountdowns();
+    }
+    
+    // 初始化模板选择器
+    if (window.templates) {
+        templates.renderTemplateSelector('templateSelector');
+    }
+    
+    // 初始化虚拟列表功能
+    initVirtualList();
     
     // 初始化拖拽排序功能
     initDragAndDrop();
@@ -61,41 +101,71 @@ function init() {
     const defaultDateTime = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
     document.getElementById('targetDateTime').value = defaultDateTime;
     
+    // 初始化日期选择器组件
+    let datePicker;
+    if (window.DatePicker) {
+        datePicker = new DatePicker('targetDateTime', {
+            showShortcuts: true,
+            onFocus: function() {
+                console.log('日期选择器获得焦点');
+            },
+            onBlur: function() {
+                console.log('日期选择器失去焦点');
+            }
+        });
+    }
+    
+    // 为日期输入添加防抖处理
+    const dateTimeInput = document.getElementById('targetDateTime');
+    if (dateTimeInput) {
+        // 防抖处理，避免频繁更新
+        const debouncedHandleChange = utils.debounce(function() {
+            // 这里可以添加日期输入的处理逻辑
+            console.log('日期输入已更新:', this.value);
+        }, 500);
+        
+        dateTimeInput.addEventListener('input', debouncedHandleChange);
+    }
+    
     // 页面加载完成后默认聚焦到目标日期输入框
     document.getElementById('targetDateTime').focus();
     
-    // 日期快捷选择功能
-    const dateShortcuts = document.querySelectorAll('.date-shortcut');
-    dateShortcuts.forEach(button => {
-        button.addEventListener('click', function() {
-            const daysToAdd = parseInt(this.getAttribute('data-days'));
-            const targetDate = new Date();
-            targetDate.setDate(targetDate.getDate() + daysToAdd);
-            
-            const year = targetDate.getFullYear();
-            const month = String(targetDate.getMonth() + 1).padStart(2, '0');
-            const day = String(targetDate.getDate()).padStart(2, '0');
-            const hours = String(targetDate.getHours()).padStart(2, '0');
-            const minutes = String(targetDate.getMinutes()).padStart(2, '0');
-            const seconds = String(targetDate.getSeconds()).padStart(2, '0');
-            
-            const dateTimeString = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
-            document.getElementById('targetDateTime').value = dateTimeString;
-        });
-    });
-    
     // 事件监听
-    document.getElementById('addCountdown').addEventListener('click', countdown.addCountdown);
+    document.getElementById('addCountdown').addEventListener('click', function() {
+        if (window.countdown && countdown.addCountdown) {
+            countdown.addCountdown();
+        } else {
+            console.error('countdown.addCountdown 未定义');
+        }
+    });
     
     // 导出/导入/清空按钮事件监听
     if (document.getElementById('exportConfig')) {
-        document.getElementById('exportConfig').addEventListener('click', countdown.exportConfig);
+        document.getElementById('exportConfig').addEventListener('click', function() {
+            if (window.countdown && countdown.exportConfig) {
+                countdown.exportConfig();
+            } else {
+                console.error('countdown.exportConfig 未定义');
+            }
+        });
     }
     if (document.getElementById('importConfig')) {
-        document.getElementById('importConfig').addEventListener('click', countdown.importConfig);
+        document.getElementById('importConfig').addEventListener('click', function() {
+            if (window.countdown && countdown.importConfig) {
+                countdown.importConfig();
+            } else {
+                console.error('countdown.importConfig 未定义');
+            }
+        });
     }
     if (document.getElementById('clearAll')) {
-        document.getElementById('clearAll').addEventListener('click', countdown.clearAll);
+        document.getElementById('clearAll').addEventListener('click', function() {
+            if (window.countdown && countdown.clearAll) {
+                countdown.clearAll();
+            } else {
+                console.error('countdown.clearAll 未定义');
+            }
+        });
     }
     
     // 计时类型切换时自动调整日期选择器默认值
@@ -145,6 +215,8 @@ function init() {
     // 应用主题
     function applyTheme(isDarkMode) {
         const body = document.body;
+        const theme = isDarkMode ? 'dark' : 'light';
+        
         if (isDarkMode) {
             body.classList.add('dark-mode');
             themeToggle.textContent = '☀️ 浅色模式';
@@ -164,8 +236,8 @@ function init() {
         // 更新 favicon
         updateFavicon(isDarkMode);
         
-        // 保存主题设置到localStorage
-        localStorage.setItem('darkMode', isDarkMode ? 'true' : 'false');
+        // 保存主题设置到状态管理
+        store.setTheme(theme);
     }
     
     // 优化暗黑模式下的背景
@@ -195,10 +267,10 @@ function init() {
     
     // 加载主题设置
     function loadTheme() {
-        const savedDarkMode = localStorage.getItem('darkMode');
-        if (savedDarkMode !== null) {
+        const savedTheme = store.getState().theme;
+        if (savedTheme) {
             // 使用保存的主题设置
-            applyTheme(savedDarkMode === 'true');
+            applyTheme(savedTheme === 'dark');
         } else {
             // 跟随系统主题
             applyTheme(checkSystemTheme());
@@ -214,6 +286,68 @@ function init() {
                 applyTheme(e.matches);
             }
         });
+    }
+    
+    // 懒加载提醒设置组件
+    let reminderSettings;
+    function initReminderSettings() {
+        // 检查是否在视口中
+        const reminderSection = document.querySelector('.reminder-section');
+        if (!reminderSection) return;
+        
+        // 检查元素是否在视口中
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    try {
+                        if (window.ReminderSettings) {
+                            reminderSettings = new ReminderSettings();
+                            console.log('提醒设置组件初始化成功');
+                        } else {
+                            console.warn('ReminderSettings 组件未加载');
+                        }
+                        // 停止观察
+                        observer.disconnect();
+                    } catch (error) {
+                        console.error('初始化提醒设置失败:', error);
+                    }
+                }
+            });
+        });
+        
+        // 开始观察
+        observer.observe(reminderSection);
+    }
+    
+    // 懒加载云同步设置组件
+    let cloudSyncSettings;
+    function initCloudSyncSettings() {
+        // 检查是否在视口中
+        const syncSection = document.querySelector('.sync-section');
+        if (!syncSection) return;
+        
+        // 检查元素是否在视口中
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    try {
+                        if (window.CloudSyncSettings) {
+                            cloudSyncSettings = new CloudSyncSettings();
+                            console.log('云同步设置组件初始化成功');
+                        } else {
+                            console.warn('CloudSyncSettings 组件未加载');
+                        }
+                        // 停止观察
+                        observer.disconnect();
+                    } catch (error) {
+                        console.error('初始化云同步设置失败:', error);
+                    }
+                }
+            });
+        });
+        
+        // 开始观察
+        observer.observe(syncSection);
     }
     
     // 动态 favicon 处理
@@ -232,6 +366,12 @@ function init() {
     // 加载主题
     loadTheme();
     
+    // 初始化提醒设置
+    initReminderSettings();
+    
+    // 初始化云同步设置
+    initCloudSyncSettings();
+    
     // 添加防抖动处理
     let isGenerating = false;
     
@@ -248,11 +388,19 @@ function init() {
     }
     
     document.getElementById('prevMonth').addEventListener('click', function() {
-        navigateMonthWithDebounce(-1);
+        if (window.calendar && calendar.navigateMonth) {
+            navigateMonthWithDebounce(-1);
+        } else {
+            console.error('calendar.navigateMonth 未定义');
+        }
     });
     
     document.getElementById('nextMonth').addEventListener('click', function() {
-        navigateMonthWithDebounce(1);
+        if (window.calendar && calendar.navigateMonth) {
+            navigateMonthWithDebounce(1);
+        } else {
+            console.error('calendar.navigateMonth 未定义');
+        }
     });
     
     // 自动更新 - 使用requestAnimationFrame替代setInterval
@@ -261,7 +409,11 @@ function init() {
     let isRunning = false;
     
     function updateWithRAF(timestamp) {
-        if (!lastUpdateTime || timestamp - lastUpdateTime >= 1000) {
+        // 对于毫秒级显示，需要更频繁的更新
+        const hasMillisecondCountdowns = countdown.countdowns && countdown.countdowns.some(c => c.timeUnit === 'all-ms');
+        const updateInterval = hasMillisecondCountdowns ? 16 : 1000; // 约60fps或1fps
+        
+        if (!lastUpdateTime || timestamp - lastUpdateTime >= updateInterval) {
             const currentTimezone = localStorage.getItem('countdownTimezone') || 'local';
             utils.updateCurrentTime(currentTimezone);
             countdown.updateCountdowns();
@@ -304,6 +456,107 @@ function init() {
     
     // 初始启动循环
     startUpdateLoop();
+    
+    // 虚拟列表功能
+    function initVirtualList() {
+        const container = document.getElementById('countdownsList');
+        if (!container) return;
+        
+        // 项的高度（假设每个倒计时项的高度是固定的）
+        const ITEM_HEIGHT = 200; // 调整为实际的项高度
+        
+        // 虚拟列表配置
+        let virtualListConfig = {
+            container: container,
+            items: [],
+            itemHeight: ITEM_HEIGHT,
+            visibleCount: 10, // 初始可见项数
+            startIndex: 0,
+            endIndex: 9 // 初始结束索引
+        };
+        
+        // 更新虚拟列表
+        function updateVirtualList() {
+            if (!virtualListConfig.container) return;
+            
+            // 获取容器高度
+            const containerHeight = virtualListConfig.container.clientHeight;
+            
+            // 计算可见项数
+            virtualListConfig.visibleCount = Math.ceil(containerHeight / virtualListConfig.itemHeight) + 2; // 额外的缓冲项
+            
+            // 计算滚动位置
+            const scrollTop = virtualListConfig.container.scrollTop;
+            
+            // 计算开始和结束索引
+            virtualListConfig.startIndex = Math.max(0, Math.floor(scrollTop / virtualListConfig.itemHeight) - 1);
+            virtualListConfig.endIndex = Math.min(
+                virtualListConfig.items.length - 1,
+                virtualListConfig.startIndex + virtualListConfig.visibleCount - 1
+            );
+            
+            // 渲染可见项
+            renderVisibleItems();
+        }
+        
+        // 渲染可见项
+        function renderVisibleItems() {
+            if (!virtualListConfig.container) return;
+            
+            const container = virtualListConfig.container;
+            const items = virtualListConfig.items;
+            
+            // 清空容器
+            container.innerHTML = '';
+            
+            // 设置容器高度
+            container.style.height = `${items.length * virtualListConfig.itemHeight}px`;
+            
+            // 渲染可见项
+            for (let i = virtualListConfig.startIndex; i <= virtualListConfig.endIndex; i++) {
+                const item = items[i];
+                if (item) {
+                    // 渲染单个倒计时项
+                    const countdownElement = document.createElement('div');
+                    countdownElement.id = `countdown-${item.id}`;
+                    countdownElement.classList.add('countdown-item');
+                    countdownElement.setAttribute('draggable', 'true');
+                    countdownElement.setAttribute('data-id', item.id);
+                    
+                    // 应用自定义样式
+                    if (item.fontFamily) {
+                        countdownElement.style.fontFamily = item.fontFamily;
+                    }
+                    if (item.textColor) {
+                        countdownElement.style.color = item.textColor;
+                    }
+                    if (item.bgColor) {
+                        countdownElement.style.backgroundColor = item.bgColor;
+                    }
+                    
+                    // 设置位置
+                    countdownElement.style.position = 'absolute';
+                    countdownElement.style.top = `${i * virtualListConfig.itemHeight}px`;
+                    countdownElement.style.height = `${virtualListConfig.itemHeight}px`;
+                    
+                    // 调用原有的渲染逻辑
+                    countdown.renderCountdown(item);
+                }
+            }
+        }
+        
+        // 监听滚动事件
+        container.addEventListener('scroll', utils.throttle(updateVirtualList, 100));
+        
+        // 监听窗口大小变化
+        window.addEventListener('resize', utils.throttle(updateVirtualList, 200));
+        
+        // 导出虚拟列表更新函数
+        window.updateVirtualList = function(items) {
+            virtualListConfig.items = items;
+            updateVirtualList();
+        };
+    }
     
     // 拖拽排序功能
     function initDragAndDrop() {

@@ -1,17 +1,24 @@
 (function() {
     // 当前显示的月份和年份
-    let currentMonth = utils.today.getMonth();
-    let currentYear = utils.today.getFullYear();
+    let currentMonth;
+    let currentYear;
 
     // 生成日历
     function generateCalendar(year, month) {
         const calendarGrid = document.querySelector('.calendar-grid');
+        if (!calendarGrid) {
+            console.error('日历网格元素未找到');
+            return;
+        }
         // 清空日历（保留星期标题）
         const days = calendarGrid.querySelectorAll('.day');
         days.forEach(day => day.remove());
         
         // 更新标题
-        document.getElementById('calendarTitle').textContent = `日历 ${year}年${month + 1}月`;
+        const calendarTitle = document.getElementById('calendarTitle');
+        if (calendarTitle) {
+            calendarTitle.textContent = `日历 ${year}年${month + 1}月`;
+        }
         
         // 计算当月第一天是星期几
         const firstDay = new Date(year, month, 1);
@@ -39,7 +46,8 @@
             dayElement.textContent = i;
             
             // 标记今天
-            if (i === utils.today.getDate() && month === utils.today.getMonth() && year === utils.today.getFullYear()) {
+            const today = new Date();
+            if (i === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
                 dayElement.classList.add('today');
             }
             
@@ -55,7 +63,10 @@
                 const selMinutes = String(currentTime.getMinutes()).padStart(2, '0');
                 const selSeconds = String(currentTime.getSeconds()).padStart(2, '0');
                 const dateStr = `${selYear}-${selMonth}-${selDay}T${selHours}:${selMinutes}:${selSeconds}`;
-                document.getElementById('targetDateTime').value = dateStr;
+                const targetDateTime = document.getElementById('targetDateTime');
+                if (targetDateTime) {
+                    targetDateTime.value = dateStr;
+                }
             });
             
             calendarGrid.appendChild(dayElement);
@@ -85,11 +96,19 @@
         generateCalendar(currentYear, currentMonth);
     }
 
+    // 初始化
+    function init() {
+        const today = new Date();
+        currentMonth = today.getMonth();
+        currentYear = today.getFullYear();
+    }
+
     // 导出函数和变量
     window.calendar = {
         generateCalendar: generateCalendar,
         navigateMonth: navigateMonth,
         currentMonth: currentMonth,
-        currentYear: currentYear
+        currentYear: currentYear,
+        init: init
     };
 })();
