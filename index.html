@@ -33,10 +33,15 @@
         </header>
         
         <div class="main-content">
-            <!-- 倒计时添加部分 -->
+            <!-- 第一行：添加倒计时、日历、统计面板 -->
             <div class="countdown-section">
                 <h2 class="countdown-title" data-i18n="addCountdown">添加倒计时</h2>
                 <div class="countdown-input">
+                    <!-- 模板选择区域 -->
+                    <div class="input-row">
+                        <h3 style="margin-bottom: 10px; font-size: 1rem;">快捷模板</h3>
+                        <div id="templateSelector"></div>
+                    </div>
                     <div class="input-row">
                         <input type="text" id="countdownName" placeholder="倒计时名称">
                     </div>
@@ -51,6 +56,7 @@
                         <label for="timeUnit" data-i18n="timeUnit">时间单位：</label>
                         <select id="timeUnit">
                             <option value="all" data-i18n="timeUnitAll">天/时/分/秒</option>
+                            <option value="all-ms" data-i18n="timeUnitAllMs">天/时/分/秒/毫秒</option>
                             <option value="day" data-i18n="timeUnitDay">仅天</option>
                             <option value="hour" data-i18n="timeUnitHour">仅时/分/秒</option>
                         </select>
@@ -118,7 +124,6 @@
                 </div>
             </div>
             
-            <!-- 日历部分 -->
             <div class="calendar-section">
                 <div class="calendar-header">
                     <h2 class="calendar-title" id="calendarTitle" data-i18n="calendar">2024年1月</h2>
@@ -139,7 +144,6 @@
                 </div>
             </div>
             
-            <!-- 统计面板 -->
             <div class="stats-section">
                 <h2 class="countdown-title" data-i18n="statistics">统计面板</h2>
                 <div class="stats-grid">
@@ -162,8 +166,71 @@
                 </div>
             </div>
             
-            <!-- 倒计时列表 -->
-            <div class="countdowns-container">
+            <!-- 第二行：提醒和云同步设置 -->
+            <div class="settings-section">
+                <h2 class="countdown-title" data-i18n="reminderSettings">提醒与同步设置</h2>
+                <div class="settings-content">
+                    <!-- 提醒设置 -->
+                    <div class="reminder-settings">
+                        <h3 style="margin-bottom: 15px; font-size: 1.1rem; color: #666;">提醒设置</h3>
+                        <div class="input-row">
+                            <label for="muteMode" data-i18n="muteMode">全局静音模式：</label>
+                            <input type="checkbox" id="muteMode">
+                        </div>
+                        <div class="input-row">
+                            <label data-i18n="reminderRules">提醒规则：</label>
+                            <div class="reminder-rules">
+                                <div class="rule-item">
+                                    <input type="checkbox" id="rule1" checked>
+                                    <label for="rule1">提前 1 天</label>
+                                </div>
+                                <div class="rule-item">
+                                    <input type="checkbox" id="rule2" checked>
+                                    <label for="rule2">提前 1 小时</label>
+                                </div>
+                                <div class="rule-item">
+                                    <input type="checkbox" id="rule3" checked>
+                                    <label for="rule3">结束时</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-row">
+                            <label data-i18n="thirdPartyReminders">第三方提醒：</label>
+                            <div class="third-party-reminders">
+                                <button id="configureThirdParty" data-i18n="configure">配置</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 云同步设置 -->
+                    <div class="sync-settings" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee;">
+                        <h3 style="margin-bottom: 15px; font-size: 1.1rem; color: #666;">云同步设置</h3>
+                        <div class="input-row">
+                            <label for="cloudSyncEnabled" data-i18n="enableCloudSync">启用云同步：</label>
+                            <input type="checkbox" id="cloudSyncEnabled">
+                        </div>
+                        <div class="input-row">
+                            <label data-i18n="syncProvider">同步服务：</label>
+                            <select id="syncProvider">
+                                <option value="github">GitHub Gist</option>
+                                <option value="netlify">Netlify Functions</option>
+                                <option value="custom">自定义后端</option>
+                            </select>
+                        </div>
+                        <div class="input-row">
+                            <button id="syncNow" data-i18n="syncNow">立即同步</button>
+                            <button id="configureSync" data-i18n="configure">配置</button>
+                        </div>
+                        <div class="sync-status" id="syncStatus">
+                            <span data-i18n="lastSync">上次同步：</span>
+                            <span id="lastSyncTime">从未</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第三行：倒计时列表（整行） -->
+            <div class="countdowns-container" style="grid-column: 1 / -1;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <h2 class="countdown-title" data-i18n="countdownsList">倒计时列表</h2>
                     <div class="countdown-actions">
@@ -181,8 +248,12 @@
     
     <script src="i18n.js"></script>
     <script src="utils.js"></script>
-    <script src="countdown.js"></script>
+    <script src=".store/index.js"></script>
     <script src="calendar.js"></script>
+    <script src=".components/DatePicker.js"></script>
+    <script src=".components/ReminderSettings.js"></script>
+    <script src=".components/CloudSyncSettings.js"></script>
+    <script src="countdown.js"></script>
     <script src="share.js"></script>
     <script src="script.js"></script>
     

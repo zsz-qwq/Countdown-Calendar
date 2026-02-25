@@ -72,7 +72,18 @@ const i18n = {
       fontFamily: '字体：',
       textColor: '文字颜色：',
       bgColor: '背景颜色：',
-      footer: 'Developed by 张思哲\n2026 , © zsz-qwq\nAll rights reserved.'
+      footer: 'Developed by 张思哲\n2026 , © zsz-qwq\nAll rights reserved.',
+      reminderSettings: '提醒设置',
+      cloudSync: '云同步设置',
+      muteMode: '全局静音模式',
+      reminderRules: '提醒规则',
+      thirdPartyReminders: '第三方提醒',
+      enableCloudSync: '启用云同步',
+      syncProvider: '同步服务',
+      syncNow: '立即同步',
+      configure: '配置',
+      lastSync: '上次同步',
+      timeUnitAllMs: '天/时/分/秒/毫秒'
     },
     en: {
       title: 'Countdown Calendar',
@@ -144,7 +155,18 @@ const i18n = {
       fontFamily: 'Font Family:',
       textColor: 'Text Color:',
       bgColor: 'Background Color:',
-      footer: 'Developed by Zhang Sizhe\n2026 , © zsz-qwq\nAll rights reserved.'
+      footer: 'Developed by Zhang Sizhe\n2026 , © zsz-qwq\nAll rights reserved.',
+      reminderSettings: 'Reminder Settings',
+      cloudSync: 'Cloud Sync Settings',
+      muteMode: 'Global Mute Mode',
+      reminderRules: 'Reminder Rules',
+      thirdPartyReminders: 'Third-party Reminders',
+      enableCloudSync: 'Enable Cloud Sync',
+      syncProvider: 'Sync Provider',
+      syncNow: 'Sync Now',
+      configure: 'Configure',
+      lastSync: 'Last Sync',
+      timeUnitAllMs: 'Days/Hours/Minutes/Seconds/Milliseconds'
     }
   },
   

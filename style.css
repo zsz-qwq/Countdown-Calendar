@@ -259,6 +259,166 @@ header h1 {
     transition: all 0.3s ease;
 }
 
+/* 设置板块部分 */
+.settings-section {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.settings-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 云同步设置样式 */
+.sync-settings {
+    font-size: 1rem;
+}
+
+.sync-settings h3 {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 15px;
+}
+
+.sync-settings .input-row {
+    margin-bottom: 12px;
+    align-items: center;
+}
+
+.sync-settings label {
+    min-width: 120px;
+    font-weight: normal;
+    color: #555;
+}
+
+.sync-settings select {
+    flex: 1;
+    padding: 8px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.sync-settings button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    background: #8a9aff;
+    color: white;
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: all 0.3s ease;
+}
+
+.sync-settings button:hover {
+    background: #7a89ff;
+    transform: scale(1.05);
+}
+
+.sync-status {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* 提醒设置样式 */
+.reminder-settings {
+    font-size: 1rem;
+}
+
+.reminder-settings h3 {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 15px;
+}
+
+.reminder-settings .input-row {
+    margin-bottom: 12px;
+    align-items: center;
+}
+
+.reminder-settings label {
+    min-width: 120px;
+    font-weight: normal;
+    color: #555;
+}
+
+.reminder-rules {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-left: 120px;
+    margin-top: -12px;
+    margin-bottom: 12px;
+}
+
+.rule-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.third-party-reminders {
+    margin-left: 120px;
+    margin-top: -12px;
+}
+
+/* 暗黑模式下的提醒设置 */
+body.dark-mode .reminder-settings h3 {
+    color: #ccc;
+}
+
+body.dark-mode .reminder-settings label {
+    color: #ccc;
+}
+
+body.dark-mode .rule-item label {
+    color: #ccc;
+}
+
+body.dark-mode .third-party-reminders button {
+    background: #667eea;
+}
+
+body.dark-mode .third-party-reminders button:hover {
+    background: #5a6cd8;
+}
+
+/* 暗黑模式下的云同步设置 */
+body.dark-mode .sync-settings h3 {
+    color: #ccc;
+}
+
+body.dark-mode .sync-settings label {
+    color: #ccc;
+}
+
+body.dark-mode .sync-settings select {
+    background: rgba(60, 60, 60, 0.9);
+    color: #f0f0f0;
+    border: 2px solid #555;
+}
+
+body.dark-mode .sync-settings button {
+    background: #667eea;
+}
+
+body.dark-mode .sync-settings button:hover {
+    background: #5a6cd8;
+}
+
+body.dark-mode .sync-status {
+    color: #999;
+}
+
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -510,6 +670,7 @@ body.dark-mode .current-time {
 
 body.dark-mode .countdown-section,
 body.dark-mode .calendar-section,
+body.dark-mode .settings-section,
 body.dark-mode .stats-section,
 body.dark-mode .countdowns-container {
     background: rgba(40, 40, 40, 0.95);
