@@ -1,0 +1,35 @@
+{
+  "name": "countdown-calendar",
+  "version": "1.0.0",
+  "description": "一个功能强大的倒计时和正计时工具",
+  "main": "index.html",
+  "scripts": {
+    "serve": "npx http-server -p 8000 -o",
+    "dev": "npx http-server -p 8000 -o",
+    "lint": "npx eslint .",
+    "format": "npx prettier --write ."
+  },
+  "keywords": [
+    "countdown",
+    "calendar",
+    "pwa",
+    "javascript"
+  ],
+  "author": "张思哲",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "prettier": "^3.0.0",
+    "http-server": "^14.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zsz-qwq/Countdown-Calendar.git"
+  },
+  "homepage": "https://zsz-qwq.github.io/Countdown-Calendar"
+}

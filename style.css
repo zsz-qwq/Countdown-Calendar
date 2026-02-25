@@ -1,0 +1,879 @@
+/* 全局样式重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 基础样式 */
+body {
+    font-family: 'Arial', sans-serif;
+    min-height: 100vh;
+    color: #333;
+    transition: background 0.3s ease;
+}
+
+/* 容器样式 */
+.container {
+    max-width: 100%;
+    margin: 0;
+    padding: 10px 40px;
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    transition: all 0.3s ease;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 头部样式 */
+header {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+header h1 {
+    font-size: 3rem;
+    margin-bottom: 5px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    transition: text-shadow 0.3s ease;
+}
+
+/* 当前时间样式 */
+.current-time {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 25px;
+    color: #666;
+    transition: color 0.3s ease;
+}
+
+/* 主要内容区域 */
+.main-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 50px;
+    margin-bottom: 60px;
+    flex: 1;
+}
+
+/* 倒计时添加部分 */
+.countdown-section {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.countdown-title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #444;
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.countdown-input {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.input-row label {
+    min-width: 80px;
+    font-weight: bold;
+    color: #555;
+    transition: color 0.3s ease;
+}
+
+.input-row input[type="text"],
+.input-row input[type="datetime-local"],
+.input-row select {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.input-row input:focus,
+.input-row select:focus {
+    border-color: #8a9aff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(138, 154, 255, 0.1);
+}
+
+.input-row button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background: #8a9aff;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.input-row button:hover {
+    background: #7a89ff;
+    transform: scale(1.05);
+    box-shadow: 0 5px 10px rgba(138, 154, 255, 0.3);
+}
+
+/* 日期快捷选择按钮样式 */
+.date-shortcuts {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.date-shortcut {
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    background: #f8f9fa;
+    color: #333;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.date-shortcut:hover {
+    background: #e9ecef;
+    border-color: #8a9aff;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(138, 154, 255, 0.2);
+}
+
+.date-shortcut:active {
+    transform: translateY(0);
+}
+
+/* 日历部分 */
+.calendar-section {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.calendar-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #444;
+    transition: color 0.3s ease;
+}
+
+.calendar-nav {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-btn {
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 5px;
+    background: #f0f0f0;
+    color: #333;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+    background: #e0e0e0;
+    transform: scale(1.1);
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.weekday {
+    text-align: center;
+    font-weight: bold;
+    color: #666;
+    padding: 10px;
+    border-radius: 5px;
+    transition: color 0.3s ease;
+}
+
+.day {
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.day:hover {
+    background: rgba(138, 154, 255, 0.1);
+    transform: scale(1.1);
+}
+
+.day.today {
+    background: #8a9aff;
+    color: white;
+    font-weight: bold;
+}
+
+.day.other-month {
+    color: #ccc;
+    opacity: 0.6;
+}
+
+/* 统计面板部分 */
+.stats-section {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.stat-item {
+    background: rgba(138, 154, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(138, 154, 255, 0.3);
+}
+
+.stat-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(138, 154, 255, 0.2);
+    border-color: #8a9aff;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #8a9aff;
+    margin-bottom: 10px;
+    transition: color 0.3s ease;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #666;
+    transition: color 0.3s ease;
+}
+
+/* 倒计时列表部分 */
+.countdowns-container {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+#countdownsList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.countdown-item {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: 1px solid #f0f0f0;
+    position: relative;
+    overflow: hidden;
+}
+
+.countdown-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: #8a9aff;
+    transition: all 0.3s ease;
+}
+
+.countdown-item:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transform: translateY(-3px);
+    border-color: #8a9aff;
+}
+
+.countdown-item:hover::before {
+    width: 8px;
+    background: #7a89ff;
+}
+
+.countdown-item.countdown-ended {
+    background: #f8f8f8;
+    border-color: #e0e0e0;
+    opacity: 0.8;
+}
+
+.countdown-item.countdown-ended::before {
+    background: #999;
+}
+
+.countdown-item.countdown-ended .time-value {
+    color: #999;
+}
+
+.countdown-item.countdown-ended .countdown-message {
+    color: #999;
+    font-style: italic;
+}
+
+.countdown-item h3 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #444;
+    transition: color 0.3s ease;
+}
+
+.countdown-timer {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.time-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(240, 240, 240, 0.8);
+    border-radius: 5px;
+    padding: 15px 10px;
+    transition: all 0.3s ease;
+    min-width: 80px;
+    text-align: center;
+}
+
+.time-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 3px;
+    padding: 5px 10px;
+    min-width: 60px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.time-label {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 5px;
+    transition: color 0.3s ease;
+}
+
+.countdown-message {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 15px;
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.countdown-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.countdown-actions button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.countdown-actions button.edit-btn {
+    background: #4CAF50;
+    color: white;
+}
+
+.countdown-actions button.edit-btn:hover {
+    background: #45a049;
+    transform: scale(1.05);
+}
+
+.countdown-actions button.share-btn {
+    background: #2196F3;
+    color: white;
+}
+
+.countdown-actions button.share-btn:hover {
+    background: #0b7dda;
+    transform: scale(1.05);
+}
+
+.countdown-actions button.delete-btn {
+    background: #f44336;
+    color: white;
+}
+
+.countdown-actions button.delete-btn:hover {
+    background: #da190b;
+    transform: scale(1.05);
+}
+
+/* 空列表消息 */
+#emptyMessage {
+    text-align: center;
+    color: #666;
+    padding: 40px 20px;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+/* 页脚样式 */
+footer {
+    position: relative;
+    margin-top: 60px;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 0;
+    box-shadow: none;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+    transition: all 0.3s ease;
+    margin-bottom: 0;
+}
+
+/* 暗黑模式样式 */
+body.dark-mode {
+    color: #f0f0f0;
+    background: linear-gradient(45deg, #2a2a2a, #1a1a1a);
+}
+
+body.dark-mode .container {
+    background: transparent;
+    box-shadow: none;
+}
+
+body.dark-mode header {
+    color: #f0f0f0;
+}
+
+body.dark-mode header h1 {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .current-time {
+    color: #ccc;
+}
+
+body.dark-mode .countdown-section,
+body.dark-mode .calendar-section,
+body.dark-mode .stats-section,
+body.dark-mode .countdowns-container {
+    background: rgba(40, 40, 40, 0.95);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .stat-item {
+    background: rgba(102, 126, 234, 0.2);
+    border-color: rgba(102, 126, 234, 0.4);
+}
+
+body.dark-mode .stat-item:hover {
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    border-color: #667eea;
+}
+
+body.dark-mode .stat-value {
+    color: #667eea;
+}
+
+body.dark-mode .stat-label {
+    color: #ccc;
+}
+
+body.dark-mode .countdown-title {
+    color: #ccc;
+}
+
+body.dark-mode .input-row label {
+    color: #ccc;
+}
+
+body.dark-mode .input-row input[type="text"],
+body.dark-mode .input-row input[type="datetime-local"],
+body.dark-mode .input-row select {
+    background: rgba(60, 60, 60, 0.9);
+    color: #f0f0f0;
+    border: 2px solid #555;
+}
+
+body.dark-mode .input-row input:focus,
+body.dark-mode .input-row select:focus {
+    border-color: #8a9aff;
+    box-shadow: 0 0 0 3px rgba(138, 154, 255, 0.2);
+}
+
+body.dark-mode .input-row button {
+    background: #667eea;
+}
+
+body.dark-mode .input-row button:hover {
+    background: #5a6cd8;
+    box-shadow: 0 5px 10px rgba(102, 126, 234, 0.3);
+}
+
+/* 暗黑模式下的日期快捷选择按钮 */
+body.dark-mode .date-shortcut {
+    background: rgba(70, 70, 70, 0.9);
+    border-color: #555;
+    color: #f0f0f0;
+}
+
+body.dark-mode .date-shortcut:hover {
+    background: rgba(80, 80, 80, 0.9);
+    border-color: #667eea;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+}
+
+body.dark-mode .calendar-title {
+    color: #ccc;
+}
+
+body.dark-mode .nav-btn {
+    background: rgba(60, 60, 60, 0.9);
+    color: #f0f0f0;
+}
+
+body.dark-mode .nav-btn:hover {
+    background: rgba(70, 70, 70, 0.9);
+}
+
+body.dark-mode .weekday {
+    color: #ccc;
+}
+
+body.dark-mode .day {
+    color: #f0f0f0;
+}
+
+body.dark-mode .day:hover {
+    background: rgba(102, 126, 234, 0.2);
+}
+
+body.dark-mode .day.today {
+    background: #667eea;
+    color: white;
+}
+
+body.dark-mode .day.other-month {
+    color: #666;
+}
+
+body.dark-mode .countdown-item {
+    background: rgba(50, 50, 50, 0.9);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border-color: #333;
+}
+
+body.dark-mode .countdown-item:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    border-color: #667eea;
+}
+
+body.dark-mode .countdown-item::before {
+    background: #667eea;
+}
+
+body.dark-mode .countdown-item:hover::before {
+    background: #5a6cd8;
+}
+
+body.dark-mode .countdown-item.countdown-ended {
+    background: rgba(60, 60, 60, 0.9);
+    border-color: #444;
+}
+
+body.dark-mode .countdown-item.countdown-ended::before {
+    background: #777;
+}
+
+body.dark-mode .countdown-item.countdown-ended .time-value {
+    color: #999;
+}
+
+body.dark-mode .countdown-item.countdown-ended .countdown-message {
+    color: #999;
+}
+
+body.dark-mode .countdown-item h3 {
+    color: #8a9aff;
+}
+
+body.dark-mode .time-box {
+    background: rgba(60, 60, 60, 0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+body.dark-mode .time-value {
+    color: #f0f0f0;
+    background: rgba(70, 70, 70, 0.8);
+}
+
+body.dark-mode .time-label {
+    color: #ccc;
+}
+
+body.dark-mode .countdown-message {
+    color: #ccc;
+}
+
+body.dark-mode .countdown-actions button.edit-btn {
+    background: #45a049;
+}
+
+body.dark-mode .countdown-actions button.edit-btn:hover {
+    background: #3d8b40;
+}
+
+body.dark-mode .countdown-actions button.delete-btn {
+    background: #e55a5a;
+}
+
+body.dark-mode .countdown-actions button.delete-btn:hover {
+    background: #d54a4a;
+}
+
+body.dark-mode #emptyMessage {
+    color: #999;
+}
+
+body.dark-mode footer {
+    background: rgba(30, 30, 30, 0.95);
+    color: #ccc;
+    box-shadow: none;
+}
+
+/* 触摸反馈样式 */
+* {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
+}
+
+button, .nav-btn, .day, .date-shortcut {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+}
+
+/* 移动端日期选择器适配 */
+input[type="datetime-local"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 5px;
+    width: 100%;
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+        min-height: 100vh;
+    }
+
+    header h1 {
+        font-size: 2rem;
+    }
+
+    .main-content {
+        grid-template-columns: 1fr;
+        gap: 25px;
+        margin-bottom: 30px;
+    }
+
+    .countdown-timer {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .time-box {
+        min-width: 70px;
+        padding: 10px 8px;
+    }
+
+    .input-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .input-row label {
+        min-width: auto;
+        font-size: 0.9rem;
+    }
+
+    .input-row input,
+    .input-row select {
+        width: 100%;
+        padding: 12px;
+        font-size: 1rem;
+    }
+
+    /* 移动端底部操作栏优化 */
+    .countdown-actions {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .countdown-actions button {
+        flex: 1;
+        min-width: 100px;
+        padding: 10px 12px;
+        font-size: 0.85rem;
+    }
+
+    /* 日期快捷选择按钮优化 */
+    .date-shortcuts {
+        justify-content: space-between;
+    }
+
+    .date-shortcut {
+        flex: 1;
+        text-align: center;
+    }
+
+    footer {
+        margin-top: 30px;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+    }
+
+    header h1 {
+        font-size: 1.6rem;
+    }
+
+    .current-time {
+        font-size: 0.9rem;
+    }
+
+    .main-content {
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .countdown-section,
+    .calendar-section,
+    .countdowns-container {
+        padding: 15px;
+    }
+
+    .time-value {
+        font-size: 1.1rem;
+        min-width: 50px;
+        padding: 4px 8px;
+    }
+
+    .time-label {
+        font-size: 0.75rem;
+    }
+
+    /* 进一步优化移动端操作栏 */
+    .countdown-actions {
+        flex-direction: column;
+    }
+
+    .countdown-actions button {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    /* 导出/导入/清空按钮适配 */
+    .countdown-actions {
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+
+    .countdown-actions button {
+        flex: 1 1 calc(33.333% - 5px);
+        min-width: 80px;
+        font-size: 0.75rem;
+        padding: 6px 8px;
+    }
+
+    footer {
+        margin-top: 20px;
+        padding: 10px;
+        font-size: 0.8rem;
+    }
+}
+
+/* 触摸动效 */
+@media (hover: none) and (pointer: coarse) {
+    button:active,
+    .nav-btn:active,
+    .date-shortcut:active,
+    .day:active {
+        transform: scale(0.95);
+        transition: transform 0.1s ease;
+    }
+
+    .countdown-item:active {
+        transform: translateY(-1px);
+        transition: transform 0.1s ease;
+    }
+}

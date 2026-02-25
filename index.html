@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>倒计时日历</title>
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="favicon.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#8a9aff">
+    <meta name="description" content="一个功能强大的倒计时和正计时工具">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+                <h1 style="display: flex; align-items: center; gap: 15px; flex: 1;">
+                    <img src="favicon.png" alt="日历图标" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                    <span data-i18n="title">倒计时日历</span>
+                </h1>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <select id="languageSelector" style="padding: 8px 12px; border: none; border-radius: 5px; background: rgba(255,255,255,0.9); color: #333; cursor: pointer;">
+                        <option value="zh">中文</option>
+                        <option value="en">English</option>
+                    </select>
+                    <button id="themeToggle" style="padding: 8px 16px; border: none; border-radius: 5px; background: rgba(255,255,255,0.9); color: #333; cursor: pointer;">
+                        🌙 暗黑模式
+                    </button>
+                </div>
+            </div>
+            <div class="current-time" id="currentTime"></div>
+        </header>
+        
+        <div class="main-content">
+            <!-- 倒计时添加部分 -->
+            <div class="countdown-section">
+                <h2 class="countdown-title" data-i18n="addCountdown">添加倒计时</h2>
+                <div class="countdown-input">
+                    <div class="input-row">
+                        <input type="text" id="countdownName" placeholder="倒计时名称">
+                    </div>
+                    <div class="input-row">
+                        <label for="countdownType" data-i18n="countdownType">计时类型：</label>
+                        <select id="countdownType">
+                            <option value="countdown" data-i18n="countdown">倒计时</option>
+                            <option value="countup" data-i18n="countup">正计时</option>
+                        </select>
+                    </div>
+                    <div class="input-row">
+                        <label for="timeUnit" data-i18n="timeUnit">时间单位：</label>
+                        <select id="timeUnit">
+                            <option value="all" data-i18n="timeUnitAll">天/时/分/秒</option>
+                            <option value="day" data-i18n="timeUnitDay">仅天</option>
+                            <option value="hour" data-i18n="timeUnitHour">仅时/分/秒</option>
+                        </select>
+                    </div>
+                    <div class="input-row">
+                    <label for="timezone" data-i18n="timezone">时区：</label>
+                    <select id="timezone">
+                        <option value="local" data-i18n="localTimezone">本地时区</option>
+                        <option value="UTC-11">UTC-11</option>
+                        <option value="UTC-10">UTC-10</option>
+                        <option value="UTC-9">UTC-9</option>
+                        <option value="UTC-8">UTC-8</option>
+                        <option value="UTC-7">UTC-7</option>
+                        <option value="UTC-6">UTC-6</option>
+                        <option value="UTC-5">UTC-5</option>
+                        <option value="UTC-4">UTC-4</option>
+                        <option value="UTC-3">UTC-3</option>
+                        <option value="UTC-2">UTC-2</option>
+                        <option value="UTC-1">UTC-1</option>
+                        <option value="UTC">UTC</option>
+                        <option value="UTC+1">UTC+1</option>
+                        <option value="UTC+2">UTC+2</option>
+                        <option value="UTC+3">UTC+3</option>
+                        <option value="UTC+4">UTC+4</option>
+                        <option value="UTC+5">UTC+5</option>
+                        <option value="UTC+6">UTC+6</option>
+                        <option value="UTC+7">UTC+7</option>
+                        <option value="UTC+8">UTC+8</option>
+                        <option value="UTC+9">UTC+9</option>
+                        <option value="UTC+10">UTC+10</option>
+                        <option value="UTC+11">UTC+11</option>
+                        <option value="UTC+12">UTC+12</option>
+                    </select>
+                </div>
+                <!-- 自定义样式选项 -->
+                <div class="input-row">
+                    <label for="fontFamily" data-i18n="fontFamily">字体：</label>
+                    <select id="fontFamily">
+                        <option value="'Arial', sans-serif">Arial</option>
+                        <option value="'Microsoft YaHei', sans-serif">微软雅黑</option>
+                        <option value="'SimSun', serif">宋体</option>
+                        <option value="'Courier New', monospace">Courier New</option>
+                        <option value="'Georgia', serif">Georgia</option>
+                    </select>
+                </div>
+                <div class="input-row">
+                    <label for="textColor" data-i18n="textColor">文字颜色：</label>
+                    <input type="color" id="textColor" value="#333333">
+                </div>
+                <div class="input-row">
+                    <label for="bgColor" data-i18n="bgColor">背景颜色：</label>
+                    <input type="color" id="bgColor" value="#ffffff">
+                </div>
+                    <div class="input-row" id="datetimeInput">
+                    <input type="datetime-local" id="targetDateTime" step="1" data-i18n="targetDateTime">
+                    <div class="date-shortcuts" style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button type="button" class="date-shortcut" data-days="0">今天</button>
+                        <button type="button" class="date-shortcut" data-days="1">明天</button>
+                        <button type="button" class="date-shortcut" data-days="7">下周</button>
+                    </div>
+                </div>
+                    <div class="input-row">
+                        <button id="addCountdown" data-i18n="add">添加</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 日历部分 -->
+            <div class="calendar-section">
+                <div class="calendar-header">
+                    <h2 class="calendar-title" id="calendarTitle" data-i18n="calendar">2024年1月</h2>
+                    <div class="calendar-nav">
+                        <div class="nav-btn" id="prevMonth">&lt;</div>
+                        <div class="nav-btn" id="nextMonth">&gt;</div>
+                    </div>
+                </div>
+                <div class="calendar-grid">
+                    <div class="weekday">日</div>
+                    <div class="weekday">一</div>
+                    <div class="weekday">二</div>
+                    <div class="weekday">三</div>
+                    <div class="weekday">四</div>
+                    <div class="weekday">五</div>
+                    <div class="weekday">六</div>
+                    <!-- 日期将通过JavaScript生成 -->
+                </div>
+            </div>
+            
+            <!-- 统计面板 -->
+            <div class="stats-section">
+                <h2 class="countdown-title" data-i18n="statistics">统计面板</h2>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalCountdowns">0</div>
+                        <div class="stat-label" data-i18n="totalCountdowns">总计时项</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="activeCountdowns">0</div>
+                        <div class="stat-label" data-i18n="activeCountdowns">活跃计时</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="completedCountdowns">0</div>
+                        <div class="stat-label" data-i18n="completedCountdowns">已完成</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="closestCountdown">-</div>
+                        <div class="stat-label" data-i18n="closestCountdown">最近目标</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 倒计时列表 -->
+            <div class="countdowns-container">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 class="countdown-title" data-i18n="countdownsList">倒计时列表</h2>
+                    <div class="countdown-actions">
+                        <button id="exportConfig" data-i18n="exportConfig" style="margin-right: 10px; padding: 8px 16px; border: none; border-radius: 5px; background: #4CAF50; color: white; cursor: pointer;">导出配置</button>
+                        <button id="importConfig" data-i18n="importConfig" style="margin-right: 10px; padding: 8px 16px; border: none; border-radius: 5px; background: #2196F3; color: white; cursor: pointer;">导入配置</button>
+                        <button id="clearAll" data-i18n="clearAll" style="padding: 8px 16px; border: none; border-radius: 5px; background: #f44336; color: white; cursor: pointer;">清空所有</button>
+                    </div>
+                </div>
+                <div id="countdownsList" class="drag-container">
+                    <!-- 倒计时项将通过JavaScript生成 -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="i18n.js"></script>
+    <script src="utils.js"></script>
+    <script src="countdown.js"></script>
+    <script src="calendar.js"></script>
+    <script src="share.js"></script>
+    <script src="script.js"></script>
+    
+    <footer style="position: fixed; bottom: 20px; right: 20px; background: rgba(255, 255, 255, 0.95); border-radius: 10px; padding: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); backdrop-filter: blur(10px); text-align: right; font-size: 0.9rem; color: #666;">
+        <div>Developed by the 张思哲</div>
+        <div>2026 , © zsz-qwq</div>
+        <div>All rights reserved.</div>
+    </footer>
+</body>
+</html>
