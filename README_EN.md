@@ -58,13 +58,32 @@ A powerful and visually appealing simple countdown tool that supports multiple c
 
 ```
 Countdown-Calendar/
-├── index.html          # Main page
-├── style.css           # Style file
-├── utils.js            # Utility functions
-├── calendar.js         # Calendar functionality
-├── countdown.js        # Core countdown logic
-├── script.js           # Page interactions
-└── favicon.png         # Website icon
+├── Core Business Files
+│   ├── index.html                # Project main page (entry file), including page layout and DOM structure
+│   ├── style.css                 # Global style file, covering responsive layout, dark mode styles, and animation effects
+│   ├── script.js                 # Page interaction logic (button clicks, theme switching, DOM operations, etc.)
+│   ├── countdown.js              # Core countdown logic (time calculation, count-up/countdown switching, end reminders, etc.)
+│   ├── calendar.js               # Calendar function module (date picker, date formatting, time zone adaptation, etc.)
+│   ├── utils.js                  # Utility functions (time formatting, local storage, DOM node caching, etc.)
+│   ├── templates.js              # Template rendering (dynamic generation of countdown items, edit popup templates, etc.)
+│   └── i18n.js                   # Internationalization configuration (multilingual text, internationalized date formats, etc.)
+├── Static Resources & Configuration
+│   ├── favicon.png               # Website icon
+│   ├── manifest.json             # PWA configuration (offline access, desktop icon, etc.)
+│   ├── package.json              # Project dependencies/script configuration (if managed by npm)
+│   └── service-worker.js         # PWA service worker (caches static resources, offline functionality)
+├── Documentation Files
+│   ├── README.md                 # Chinese project documentation (features, usage, contribution guidelines)
+│   ├── README_EN.md              # English project documentation
+│   ├── LICENSE                   # MIT license file
+│   ├── CODE_OF_CONDUCT.md        # Code of Conduct
+│   ├── CONTRIBUTING.md           # Chinese contribution guidelines
+│   └── CONTRIBUTING_EN.md        # English contribution guidelines
+├── Engineering Configuration
+│   └── .github/
+│       └── workflows/            # GitHub Actions workflow configuration (CI/CD, automated testing, etc.)
+└── Extended Function Files
+    └── share.js                  # Sharing function module (countdown result sharing, screenshots, etc.)
 ```
 
 ## ⚠️ Known Issues/Limitations
