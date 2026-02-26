@@ -58,13 +58,32 @@
 
 ```
 Countdown-Calendar/
-├── index.html          # 主页面
-├── style.css           # 样式文件
-├── utils.js            # 工具函数
-├── calendar.js         # 日历功能
-├── countdown.js        # 倒计时核心逻辑
-├── script.js           # 页面交互
-└── favicon.png         # 网站图标
+├── 核心业务文件
+│   ├── index.html                # 项目主页面（入口文件），包含页面布局、DOM 结构
+│   ├── style.css                 # 全局样式文件，涵盖响应式布局、暗黑模式样式、动画效果
+│   ├── script.js                 # 页面交互逻辑（按钮点击、主题切换、DOM 操作等）
+│   ├── countdown.js              # 倒计时核心逻辑（时间计算、正/倒计时切换、结束提醒等）
+│   ├── calendar.js               # 日历功能模块（日期选择器、日期格式化、时区适配等）
+│   ├── utils.js                  # 工具函数（时间格式化、本地缓存、DOM 节点缓存等）
+│   ├── templates.js              # 模板渲染（倒计时项的动态生成、编辑弹窗模板等）
+│   └── i18n.js                   # 国际化配置（多语言文本、日期格式国际化等）
+├── 静态资源与配置
+│   ├── favicon.png               # 网站图标
+│   ├── manifest.json             # PWA 配置（离线访问、桌面图标等）
+│   ├── package.json              # 项目依赖/脚本配置（若有 npm 管理）
+│   └── service-worker.js         # PWA 服务工作线程（缓存静态资源、离线功能）
+├── 文档类文件
+│   ├── README.md                 # 中文项目说明（功能、使用、贡献指南）
+│   ├── README_EN.md              # 英文项目说明
+│   ├── LICENSE                   # MIT 许可证文件
+│   ├── CODE_OF_CONDUCT.md        # 行为准则
+│   ├── CONTRIBUTING.md           # 中文贡献指南
+│   └── CONTRIBUTING_EN.md        # 英文贡献指南
+├── 工程化配置
+│   └── .github/
+│       └── workflows/            # GitHub Actions 工作流配置（CI/CD、自动化测试等）
+└── 扩展功能文件
+    └── share.js                  # 分享功能模块（倒计时结果分享、截图等）
 ```
 
 ## ⚠️ 已知问题/限制
